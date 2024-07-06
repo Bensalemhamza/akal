@@ -1,0 +1,82 @@
+{% extends 'layout.html' %} {% block body %} {% block content %}
+<section class="noAnimation bg-darkGreen sm:py-[53px] py-[37px] text-center">
+  <h2 class="font-bold lg:text-[38px] text-[26px] text-white">
+    Welcome To Our Shop
+  </h2>
+</section>
+
+<section
+  class="font-bold sm:text-[20px] text-[14px] p-[31px] sm:px-[50px] flex sm:gap-[18px] gap-[13px] justify-center sm:justify-start items-center"
+>
+  <a
+    href="{{ url_for('shopAll') }}"
+    class="text-[#323232] sm:px-[38px] px-[30px] bg-[#D9D9D9] py-[7px] rounded-[22px]"
+    >All</a
+  >
+  <a
+    href="{{ url_for('shopFull') }}"
+    class="text-white sm:px-[30px] px-[26px] bg-main py-[7px] rounded-[22px]"
+    >Available</a
+  >
+
+  <a
+    href="{{ url_for('shopOut') }}"
+    class="text-[#323232] sm:px-[15px] px-[17px] bg-[#D9D9D9] py-[7px] rounded-[22px] text-nowrap"
+    >Out Of Stock</a
+  >
+</section>
+<section
+  class="flex px-[30px] sm:px-[50px] gap-[20px] lg:gap-[30px] pb-[30px] flex-wrap"
+>
+  {% for data in datas %}
+  <div
+    id="container"
+    class="cursor-pointer noAnimation lg:w-[500px] sm:w-[324px] w-[314px] h-[400px] rounded-[10px] shadow-4xl relative overflow-hidden"
+  >
+    <form
+      action="{{ url_for('buy') }}"
+      method="post"
+      class="absolute top-[13px] right-[13px] rounded-[6px] bg-[#F6F6F6] p-[7px] flex justify-center items-center"
+    >
+      <input type="hidden" name="fertilizer_name" value="{{ data.name}}" />
+      <button type="submit">
+        <img src="/static/images/icons/greenCart.png" alt="cart" />
+      </button>
+    </form>
+    <img src="{{data.land_src}}" alt="fertilizer" class="h-[204px] w-full" />
+    <div class="py-[14px] px-[22px] space-y-[15px]">
+      <h2 class="text-[25px] font-bold leading-[24px] text-[#121212]">
+        {{ data.name }}
+      </h2>
+
+      <div class="flex gap-[11px] text-[11px]">
+        <span
+          class="px-[23px] py-[5px] bg-[#D9D9D9] rounded-[6px] text-[#403F3F] font-medium"
+          >Price : ${{data.price}}
+        </span>
+        <span
+          class="{{'px-[10px] py-[5px] bg-[#FE8B8B] rounded-[6px] text-[#8C0202] font-medium' if data.quantity ==0 else 'px-[10px] py-[5px] bg-[#91F278] rounded-[6px] text-[#187900] font-medium'}}"
+          >{{'Out Of Stock' if data.quantity == 0 else 'Available' }}
+          ({{data.quantity }})
+        </span>
+      </div>
+      <p
+        class="text-[#777777] leading-[17.986px] lg:leading-[30.482px] text-[18px]"
+      >
+        {{data.description}}
+      </p>
+    </div>
+  </div>
+
+  {% endfor %}
+</section>
+<script>
+    const container = document.querySelectorAll("#container");
+  container.forEach((ele) => {
+    ele.addEventListener("click", () => {
+      ele.firstElementChild.submit();
+    });
+  });
+</script>
+</script>
+{% endblock %} {% endblock %}
